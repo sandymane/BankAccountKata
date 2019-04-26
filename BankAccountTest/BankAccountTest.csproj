@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="DepositTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="HistoriqueOperationTest.cs" />
     <Compile Include="WithDrawalTest.cs" />
   </ItemGroup>
   <ItemGroup>

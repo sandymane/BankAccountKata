@@ -12,7 +12,7 @@ namespace BankAccountTest
         {
             Account account = new Account(50);
 
-            account.MakeWithdrawal(10);
+            account.Withdrawal(10);
             Assert.AreEqual(40.0, account.GetBalanceValue());
         }
 
@@ -21,7 +21,7 @@ namespace BankAccountTest
         {
             Account account = new Account(50);
 
-            account.MakeWithdrawal(-10);
+            account.Withdrawal(-10);
             Assert.AreEqual(50.0, account.GetBalanceValue());
         }
     }

@@ -8,18 +8,27 @@ namespace BankAccount
 {
     public abstract class Operation
     {
-        protected readonly DateTime Date;
-        protected readonly double  Amount;
+        protected readonly DateTime _date;
+        protected readonly double Amount;
 
         public Operation(double amount, DateTime date)
         {
-            Date = date;
+            _date = date;
             Amount = amount;
-             
+
         }
 
-        public abstract override string ToString();
-        
+        public DateTime Date
+        {
+            get
+            {
+                return _date;
+            }
+
+        }
+
+        public override abstract string ToString();
+
 
     }
 
