@@ -15,7 +15,7 @@ namespace BankAccount
 
         public override string ToString()
         {
-            return String.Format("DEPOSIT | {0} | {1} | {2}", Date.Date, Date.Hour, Amount);
+            return String.Format("DEPOSIT | {0} | {1} | {1}", Date.Date.ToShortDateString(), Amount);
         }
     }
 }

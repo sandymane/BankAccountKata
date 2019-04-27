@@ -7,11 +7,7 @@ namespace BankAccountTest
     [TestClass]
     public class DepositTest
     {
-        [TestMethod]
-        public void TrueShoulldBeTrue()
-        {
-            Assert.AreEqual(true, true);
-        }
+       
 
         [TestMethod]
         public void MakeAPositiveDepositOnAccountShouldIncreaseBalance()
@@ -23,12 +19,12 @@ namespace BankAccountTest
         }
 
         [TestMethod]
-        public void MakeANegativeDepositOnAccountShouldDoNothing()
+        [ExpectedException(typeof(Exception),
+    "Impossible to make the deposit : negative amount")]
+        public void MakeANegativeDepositOnAccountShouldThrowException()
         {
             Account account = new Account(50);
-
             account.Deposit(-80);
-            Assert.AreEqual(50.0, account.GetBalanceValue());
         }
     }
 }

@@ -17,12 +17,32 @@ namespace BankAccountTest
         }
 
         [TestMethod]
-        public void MakeANegativeWithDrawalOnAccountShouldDoNothing()
+        public void MakeAPositiveWithDrawalOnAccountShouldReturnAmount()
         {
             Account account = new Account(50);
 
+            double withdrawal = account.Withdrawal(10);
+            Assert.AreEqual(10.0, withdrawal);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception),
+    "Impossible to make the withdrawal : negative amount")]
+        public void MakeANegativeWithDrawalOnAccountShouldThrowException()
+        {
+            Account account = new Account(50);
             account.Withdrawal(-10);
-            Assert.AreEqual(50.0, account.GetBalanceValue());
+            
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception),
+    "Impossible to make the withdrawal : fund is insuffisant")]
+        public void MakeAWithDrawalGreaterThanBalanceShouldThrowException()
+        {
+            Account account = new Account(50);
+
+            account.Withdrawal(100);
         }
     }
 }
