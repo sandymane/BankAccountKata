@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankAccount
 {
@@ -15,7 +11,7 @@ namespace BankAccount
 
         public override string ToString()
         {
-            return String.Format("WITHDRAWAL | {0} | {1} | -{1}", Date.Date.ToShortDateString(), Amount);
+            return String.Format("WITHDRAWAL | {0} | {1}        |", Date.Date.ToShortDateString(), _amount);
         }
     }
 }

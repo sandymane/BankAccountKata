@@ -13,10 +13,8 @@ namespace BankAccount
 
         public Account(double amount)
         {
-            
             Operations = new List<Operation>();
             Deposit(amount);
-            
             
         }
 
@@ -81,16 +79,27 @@ namespace BankAccount
                 String.Format("Record of the account's operations {0} {1}"
                 , dateFrom, dateTo));
 
-            stringBuilder.AppendLine("TYPE | DATE | AMOUNT | BALANCE");
+            stringBuilder.AppendLine("TYPE       | DATE       | WITHDRAWAL | DEPOSIT");
 
             Operations.OrderByDescending(b => b.Date)
-                .Where(b => startDate.HasValue ? b.Date >= startDate : true
-                && endDate.HasValue ? b.Date <= endDate : true)
+                .Where(b => (startDate.HasValue ? b.Date >= startDate : true)
+                && (endDate.HasValue ? b.Date <= endDate : true))
                 .ToList()
                 .ForEach(b => stringBuilder.AppendLine(b.ToString()));
+            stringBuilder.AppendLine("----------------------------------------------");
 
+            stringBuilder.AppendLine(string.Format("Total of operations     | {0}        | {1}",
+                computeTotalWithdrawalBetween(startDate, endDate) == 0 ? "     " : computeTotalWithdrawalBetween(startDate, endDate).ToString(),
+                computeTotalDepositBetween(startDate, endDate) == 0 ? "" : computeTotalDepositBetween(startDate, endDate).ToString()));
+
+            stringBuilder.AppendLine("----------------------------------------------");
+
+            stringBuilder.AppendLine(string.Format("Balance Account         | {0}        | {1}",
+                Balance < 0 ? Balance.ToString() : "   ",
+                Balance >= 0 ? Balance.ToString() : ""));
             return stringBuilder.ToString();
         }
+
 
         private bool HasSuffisantFund(double amount)
         {
@@ -100,6 +109,31 @@ namespace BankAccount
         public int GetOperationsCount()
         {
             return Operations.Count;
+        }
+
+        public double computeTotalDepositBetween(DateTime? startDate, DateTime? endDate)
+        {
+            return  Operations.Where(b => b is Deposit
+           && (startDate.HasValue ? b.Date >= startDate : true)
+                && (endDate.HasValue ? b.Date <= endDate : true)).Sum(b => b.Amount);
+        }
+
+        public double computeTotalWithdrawalBetween(DateTime? startDate, DateTime? endDate)
+        {
+            return Operations.Where(b => b is Withdrawal
+           && (startDate.HasValue ? b.Date >= startDate : true)
+                && (endDate.HasValue ? b.Date <= endDate : true)).Sum(b => b.Amount);
+        }
+
+        public double computeTotalOperationBefore(DateTime? date)
+        {
+            var totalWithdrawal =  Operations.Where(b => b is Withdrawal
+           && (date.HasValue ? b.Date < date.Value.Date : true)).Sum(b => b.Amount);
+
+            var totalDeposit = Operations.Where(b => b is Deposit
+          && (date.HasValue ? b.Date < date.Value.Date : true)).Sum(b => b.Amount);
+
+            return totalDeposit - totalWithdrawal;
         }
     }
 }

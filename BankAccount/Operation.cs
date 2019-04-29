@@ -9,12 +9,12 @@ namespace BankAccount
     public abstract class Operation
     {
         protected readonly DateTime _date;
-        protected readonly double Amount;
+        protected readonly double _amount;
 
         public Operation(double amount, DateTime date)
         {
             _date = date;
-            Amount = amount;
+            _amount = amount;
 
         }
 
@@ -23,6 +23,15 @@ namespace BankAccount
             get
             {
                 return _date;
+            }
+
+        }
+
+        public double Amount
+        {
+            get
+            {
+                return _amount;
             }
 
         }

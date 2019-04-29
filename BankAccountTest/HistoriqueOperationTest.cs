@@ -51,22 +51,22 @@ namespace BankAccountTest
             Assert.AreEqual(3, account.GetOperationsCount());
         }
 
-//        [TestMethod]
-//        public void CreateAccountAndMake2DepositsAnd1WithdrawalShouldGiveHistoriqueOfFourOperations()
-//        {
-//            Account account = new Account(10);
-//            account.Deposit(50);
-//            account.Deposit(80);
-//            account.Withdrawal(100.5);
+        [TestMethod]
+        public void CreateAccountAndMake2DepositsAnd1WithdrawalShouldGiveHistoriqueOfFourOperations()
+        {
+            Account account = new Account(10);
+            account.Deposit(50);
+            account.Deposit(80);
+            //account.Withdrawal(100.5);
 
-//            string historique = @"Record of the account's operations  
-//TYPE | DATE | AMOUNT | BALANCE
-//DEPOSIT | 27/04/2019 | 18:22 | 10 | 10
-//DEPOSIT | 27/04/2019 | 18:22 | 50 | 50
-//DEPOSIT | 27/04/2019 | 18:22 | 80 | 80
-//WITHDRAWAL | 27/04/2019 | 18:22 | 100,5 |-100,5  
-//";
-//            Assert.AreEqual(historique, account.GetOperationsHistory(null, null));
-//        }
+            string historique = @"Record of the account's operations  
+TYPE | DATE | AMOUNT | BALANCE
+DEPOSIT | 27/04/2019 | 18:22 | 10 | 10
+DEPOSIT | 27/04/2019 | 18:22 | 50 | 50
+DEPOSIT | 27/04/2019 | 18:22 | 80 | 80
+WITHDRAWAL | 27/04/2019 | 18:22 | 100,5 |-100,5  
+";
+            Assert.AreEqual(historique, account.GetOperationsHistory(null, null));
+        }
     }
 }
