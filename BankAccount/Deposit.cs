@@ -4,14 +4,14 @@ namespace BankAccount
 {
     public class Deposit : Operation
     {
-        public Deposit(double amount, DateTime date) : base(amount, date)
+        public Deposit(Amount amount, DateTime date) : base(amount, date)
         {
 
         }
 
         public override string ToString()
         {
-            return String.Format("DEPOSIT    | {0} |            | {1}", Date.Date.ToShortDateString(), _amount);
+            return $"DEPOSIT    | {Date.Date.ToShortDateString()} |            | {Amount.Value}";
         }
     }
 }

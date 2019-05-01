@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankAccount
 {
@@ -10,103 +6,133 @@ namespace BankAccount
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Press 1 to create account, 2 for deposit, press 3 for withdrawal, 4 for operations records, Z for exit");
-            var input = Console.ReadLine();
-            var inputResponse = string.Empty;
-            Account account = null;
-            while (input.ToString().ToUpper() != "Z")
+            try
             {
-                if(input.ToString() == "1")
+                DisplayMenu();
+                var input = Console.ReadLine();
+                Account account = null;
+             
+                while (input.ToString().ToUpper() != "Z")
                 {
-                    if(account != null)
+                    if (input.ToString() == "1")
                     {
-                        Console.WriteLine("Account already exists, Press 2 for deposit,  3 for withdrawal, 4 for operations records");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Enter the amount to create account");
-                        inputResponse = Console.ReadLine();
-                        double amount;
-                        if (double.TryParse(inputResponse.ToString(), out amount))
+                        if (account != null)
                         {
-                            account = new Account(amount);
-                            Console.WriteLine(String.Format("creation  of account with a balance of {0} done", amount));
+                            Console.WriteLine("Account already exists");
+                            DisplayMenu();
                         }
-                        Console.WriteLine("Press 1 to create account, 2 for deposit, press 3 for withdrawal, 4 for operations records, Z for exit");
-
-                    }
- 
-                }
-
-                if (input.ToString() == "2")
-                {
-                    if (account == null)
-                    {
-                        Console.WriteLine("Account not exists, press 1 to create it");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Enter the amount of the deposit");
-                        inputResponse = Console.ReadLine();
-                        double amount;
-                        if (double.TryParse(inputResponse.ToString(), out amount))
+                        else
                         {
-                            account.Deposit(amount);
-                            Console.WriteLine(String.Format("deposit of {0} done", amount));
-
-                        }
-                        Console.WriteLine("Press 1 to create account, 2 for deposit, press 3 for withdrawal, 4 for operations records, Z for exit");
-
-                    }
-                }
-
-                if (input.ToString() == "3")
-                {
-                    if (account == null)
-                    {
-                        Console.WriteLine("Account not exists, press 1 to create it");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Enter the amount of the withdrawal");
-                        inputResponse = Console.ReadLine();
-                        double amount;
-                        if (double.TryParse(inputResponse.ToString(), out amount))
-                        {
-                            account.Withdrawal(amount);
-                            Console.WriteLine(String.Format("withdrawal of {0} done", amount));
-
+                            Console.WriteLine("Enter the amount to create account");
+                            Amount amount = ConvertResponseInAmount();
+                            if(amount.Value > -1)
+                            {
+                                account = new Account(amount);
+                                if(amount.isPositive())
+                                {
+                                    Console.WriteLine($"Creation  of account with an initial deposit of {amount} done");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Creation  of account done");
+                                }
+                            }
+                            DisplayMenu();
                         }
 
-                        Console.WriteLine("Press 1 to create account, 2 for deposit, press 3 for withdrawal, 4 for operations records, Z for exit");
-
                     }
 
-                }
-
-
-                if (input.ToString() == "4")
-                {
-                    if (account == null)
+                    else if (input.ToString() == "2")
                     {
-                        Console.WriteLine("Account not exists, press 1 to create it");
+                        if(CheckIfAccountExistsAndAdvertClient(account))
+                        {
+                            Console.WriteLine("Enter the amount of the deposit");
+                            Amount amount = ConvertResponseInAmount();
+                            if (amount.isPositive())
+                            {
+                                account.Deposit(amount);
+                                Console.WriteLine($"Deposit of {amount} done");
+
+                            }
+                            DisplayMenu();
+                        }
+                    }
+                    else if (input.ToString() == "3")
+                    {
+                        if (CheckIfAccountExistsAndAdvertClient(account))
+                        {
+                            Console.WriteLine("Enter the amount of the withdrawal");
+                            Amount amount = ConvertResponseInAmount();
+                            if (amount.isPositive())
+                            {
+                                account.Withdrawal(amount);
+                                Console.WriteLine($"Withdrawal of {amount} done");
+                            }
+                            DisplayMenu();
+                        }
+
+                    }
+                    else if (input.ToString() == "4")
+                    {
+                        if (CheckIfAccountExistsAndAdvertClient(account))
+                        {
+                            string records = account.GetOperationsHistory();
+                            Console.WriteLine(records);
+                            DisplayMenu();
+                        }
+
                     }
                     else
                     {
-                        
-                        string records = account.GetOperationsHistory(null, null);
-                        Console.WriteLine(records);
-
-                        Console.WriteLine("Press 1 to create account, 2 for deposit, press 3 for withdrawal, 4 for operations records, Z for exit");
-
+                        Console.WriteLine("Instruction not found");
+                        DisplayMenu();
                     }
-
+                    input = Console.ReadLine();
                 }
-                input = Console.ReadLine();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error : {ex.Message}");
+                Console.ReadKey();
             }
 
         }
 
-       
+        private static  Amount ConvertResponseInAmount()
+        {
+            var inputResponse = Console.ReadLine();
+            double amountValue;
+            if (double.TryParse(inputResponse.ToString().Replace(".", ","), out amountValue))
+            {
+                return new Amount(amountValue);
+            }
+            else
+            {
+                Console.WriteLine("You have to tap a number");
+                return new Amount(-1);
+            }
+        }
+
+        private static void DisplayMenu()
+        {
+            Console.WriteLine("Press :");
+            Console.WriteLine("1) to create account");
+            Console.WriteLine("2) to make a deposit");
+            Console.WriteLine("3) to make a withdrawal");
+            Console.WriteLine("4) to see the operations records");
+            Console.WriteLine("Z) for exit");
+        }
+
+        private static bool CheckIfAccountExistsAndAdvertClient(Account account)
+        {
+            if (account == null)
+            {
+                Console.WriteLine("Account not exists, press 1 to create it");
+                return false;
+            }
+            return true;
+        }
+
     }
+
 }

@@ -10,19 +10,19 @@ namespace BankAccountTest
         [TestMethod]
         public void MakeAPositiveWithDrawalOnAccountShouldDecreaseBalance()
         {
-            Account account = new Account(50);
+            Account account = new Account( new Amount(50));
 
-            account.Withdrawal(10);
+            account.Withdrawal( new Amount(10));
             Assert.AreEqual(40.0, account.GetBalanceValue());
         }
 
         [TestMethod]
         public void MakeAPositiveWithDrawalOnAccountShouldReturnAmount()
         {
-            Account account = new Account(50);
+            Account account = new Account( new Amount(50));
 
-            double withdrawal = account.Withdrawal(10);
-            Assert.AreEqual(10.0, withdrawal);
+            Amount withdrawal = account.Withdrawal( new Amount(10));
+            Assert.AreEqual(10.0, withdrawal.Value);
         }
 
         [TestMethod]
@@ -30,8 +30,8 @@ namespace BankAccountTest
     "Impossible to make the withdrawal : negative amount")]
         public void MakeANegativeWithDrawalOnAccountShouldThrowException()
         {
-            Account account = new Account(50);
-            account.Withdrawal(-10);
+            Account account = new Account( new Amount(50));
+            account.Withdrawal( new Amount(-10));
             
         }
 
@@ -40,9 +40,9 @@ namespace BankAccountTest
     "Impossible to make the withdrawal : fund is insuffisant")]
         public void MakeAWithDrawalGreaterThanBalanceShouldThrowException()
         {
-            Account account = new Account(50);
+            Account account = new Account( new Amount(50));
 
-            account.Withdrawal(100);
+            account.Withdrawal( new Amount(100));
         }
     }
 }

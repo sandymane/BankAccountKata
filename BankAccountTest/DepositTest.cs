@@ -12,9 +12,9 @@ namespace BankAccountTest
         [TestMethod]
         public void MakeAPositiveDepositOnAccountShouldIncreaseBalance()
         {
-            Account account = new Account(50);
+            Account account = new Account(new Amount(50));
 
-            account.Deposit(10);
+            account.Deposit(new Amount(10));
             Assert.AreEqual(60.0, account.GetBalanceValue());
         }
 
@@ -23,8 +23,8 @@ namespace BankAccountTest
     "Impossible to make the deposit : negative amount")]
         public void MakeANegativeDepositOnAccountShouldThrowException()
         {
-            Account account = new Account(50);
-            account.Deposit(-80);
+            Account account = new Account(new Amount(50));
+            account.Deposit(new Amount(-80));
         }
     }
 }
