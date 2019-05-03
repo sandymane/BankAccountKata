@@ -7,14 +7,14 @@ namespace BankAccountTest
     [TestClass]
     public class DepositTest
     {
-       
+        DateTime date = new DateTime(2019, 05, 02);
 
         [TestMethod]
         public void MakeAPositiveDepositOnAccountShouldIncreaseBalance()
         {
-            Account account = new Account(new Amount(50));
+            Account account = new Account(new Amount(50), date);
 
-            account.Deposit(new Amount(10));
+            account.Deposit(new Amount(10), date);
             Assert.AreEqual(60.0, account.GetBalanceValue());
         }
 
@@ -23,8 +23,8 @@ namespace BankAccountTest
     "Impossible to make the deposit : negative amount")]
         public void MakeANegativeDepositOnAccountShouldThrowException()
         {
-            Account account = new Account(new Amount(50));
-            account.Deposit(new Amount(-80));
+            Account account = new Account(new Amount(50), date);
+            account.Deposit(new Amount(-80), date);
         }
     }
 }

@@ -10,12 +10,12 @@ namespace BankAccount
             Value = amountValue;
         }
 
-        public void Add(Amount amount)
+        public void IncreaseAmount(Amount amount)
         {
             Value += amount.Value;
         }
 
-        public void Substract(Amount amount)
+        public void DecreaseAmount(Amount amount)
         {
             Value -= amount.Value;
         }

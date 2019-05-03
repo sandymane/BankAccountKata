@@ -11,6 +11,7 @@ namespace BankAccount
                 DisplayMenu();
                 var input = Console.ReadLine();
                 Account account = null;
+                DateTime date = DateTime.Now;
              
                 while (input.ToString().ToUpper() != "Z")
                 {
@@ -27,7 +28,7 @@ namespace BankAccount
                             Amount amount = ConvertResponseInAmount();
                             if(amount.Value > -1)
                             {
-                                account = new Account(amount);
+                                account = new Account(amount, date);
                                 if(amount.isPositive())
                                 {
                                     Console.WriteLine($"Creation  of account with an initial deposit of {amount} done");
@@ -50,7 +51,7 @@ namespace BankAccount
                             Amount amount = ConvertResponseInAmount();
                             if (amount.isPositive())
                             {
-                                account.Deposit(amount);
+                                account.Deposit(amount, date);
                                 Console.WriteLine($"Deposit of {amount} done");
 
                             }
@@ -65,7 +66,7 @@ namespace BankAccount
                             Amount amount = ConvertResponseInAmount();
                             if (amount.isPositive())
                             {
-                                account.Withdrawal(amount);
+                                account.Withdrawal(amount, date);
                                 Console.WriteLine($"Withdrawal of {amount} done");
                             }
                             DisplayMenu();

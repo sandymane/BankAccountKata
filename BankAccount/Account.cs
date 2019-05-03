@@ -13,14 +13,14 @@ namespace BankAccount
             _balance = new Amount(0);
         }
 
-        public Account(Amount amount) : this()
+        public Account(Amount amount, DateTime dateTime) : this()
         {
             _operations = new Operations();
-            Deposit(amount);
+            Deposit(amount, dateTime);
             
         }
 
-        public void Deposit(Amount amount)
+        public void Deposit(Amount amount, DateTime dateTime)
         {
             if(amount.isNegative())
             {
@@ -28,28 +28,23 @@ namespace BankAccount
             }
             if (amount.isPositive())
             {
-                _balance.Add(amount);
-                Operation deposit = new Deposit(amount, DateTime.Now);
+                _balance.IncreaseAmount(amount);
+                Operation deposit = new Deposit(amount, dateTime);
                 _operations.AddOperation(deposit);
 
             }
 
         }
 
-        public Amount Withdrawal(Amount amount)
+        public Amount Withdrawal(Amount amount, DateTime dateTime)
         {
             if(amount.isNegative())
             {
                 throw new Exception("Impossible to make the withdrawal : negative amount");
             }
 
-            if (!HasSuffisantFundToSubstract(amount))
-            {
-                throw new Exception("Impossible to make the withdrawal : fund is insuffisant");
-            }
-
-            _balance.Substract(amount);
-            Operation withdrawal = new Withdrawal(amount, DateTime.Now);
+            _balance.DecreaseAmount(amount);
+            Operation withdrawal = new Withdrawal(amount, dateTime);
             _operations.AddOperation(withdrawal);
             return amount;
         }
@@ -83,20 +78,21 @@ namespace BankAccount
             stringBuilder.AppendLine("----------------------------------------------");
 
             stringBuilder.AppendLine(string.Format("Balance of account      | {0}        | {1}",
-                _balance.Value < 0 ? "-"+_balance.Value.ToString() : "   ",
+                _balance.Value < 0 ? _balance.Value.ToString() : "   ",
                 _balance.Value >= 0 ? _balance.Value.ToString() : ""));
-
+           
             return stringBuilder.ToString();
         }
 
-        private bool HasSuffisantFundToSubstract(Amount amount)
-        {
-            return _balance.Value >= amount.Value;
-        }
-
+      
         public int GetOperationsCount()
         {
             return _operations.GetCount();
+        }
+
+        public Operations GetOperations()
+        {
+            return _operations;
         }
 
         public double GetTotatlOf<T>() where T : Operation
@@ -104,5 +100,9 @@ namespace BankAccount
             return _operations.ComputeTotalOf<T>();
         }
 
+        public int GetOperationsCountOf<T>() where T : Operation
+        {
+            return _operations.GetCountOf<T>();
+        }
     }
 }

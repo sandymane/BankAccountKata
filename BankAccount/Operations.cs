@@ -24,9 +24,14 @@ namespace BankAccount
             return _operations.Count;
         }
 
+        public int GetCountOf<T>() where T : Operation
+        {
+            return _operations.OfType<T>().Count();
+        }
+
         public double ComputeTotalOf<T>() where T : Operation
         {
-            return _operations.Where(b => b is T).Sum(b => b.Amount.Value);
+            return _operations.OfType<T>().Sum(b => b.Amount.Value);
         }
 
         public override string ToString()
