@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BankAccount
 {
     public class Account
     {
         private Amount _balance;
-        private List<Operation> _operations;
+        private Operations _operations;
 
         public Account()
         {
@@ -18,7 +15,7 @@ namespace BankAccount
 
         public Account(Amount amount) : this()
         {
-            _operations = new List<Operation>();
+            _operations = new Operations();
             Deposit(amount);
             
         }
@@ -33,7 +30,7 @@ namespace BankAccount
             {
                 _balance.Add(amount);
                 Operation deposit = new Deposit(amount, DateTime.Now);
-                _operations.Add(deposit);
+                _operations.AddOperation(deposit);
 
             }
 
@@ -53,7 +50,7 @@ namespace BankAccount
 
             _balance.Substract(amount);
             Operation withdrawal = new Withdrawal(amount, DateTime.Now);
-            _operations.Add(withdrawal);
+            _operations.AddOperation(withdrawal);
             return amount;
         }
 
@@ -71,19 +68,17 @@ namespace BankAccount
             stringBuilder.AppendLine( $"Record of the account's operations");
             stringBuilder.AppendLine("TYPE       | DATE       | WITHDRAWAL | DEPOSIT");
 
-            _operations.OrderByDescending(b => b.Date)
-                .ToList()
-                .ForEach(b => stringBuilder.AppendLine(b.ToString()));
+            stringBuilder.AppendLine(_operations.ToString());
 
             stringBuilder.AppendLine("----------------------------------------------");
 
-            double withdrawValue = ComputeTotalOf<Withdrawal>();
-            string withdraw = withdrawValue == 0 ? "" : "-" + ComputeTotalOf<Withdrawal>().ToString();
+            double withdrawValue = GetTotatlOf<Withdrawal>();
+            string withdraw = withdrawValue == 0 ? "" : "-" + GetTotatlOf<Withdrawal>().ToString();
             withdraw = withdraw.CompleteWithSpaces(10);
            
             stringBuilder.AppendLine(string.Format("Total of operations     | {0} | {1}",
                 withdraw,
-                ComputeTotalOf<Deposit>() == 0 ? "" : ComputeTotalOf<Deposit>().ToString()));
+                GetTotatlOf<Deposit>() == 0 ? "" : GetTotatlOf<Deposit>().ToString()));
 
             stringBuilder.AppendLine("----------------------------------------------");
 
@@ -101,12 +96,12 @@ namespace BankAccount
 
         public int GetOperationsCount()
         {
-            return _operations.Count;
+            return _operations.GetCount();
         }
 
-        public double ComputeTotalOf<T>() where T : Operation
+        public double GetTotatlOf<T>() where T : Operation
         {
-            return _operations.Where(b => b is T).Sum(b => b.Amount.Value);
+            return _operations.ComputeTotalOf<T>();
         }
 
     }
