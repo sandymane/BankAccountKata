@@ -11,7 +11,7 @@ namespace BankAccount
         public DateTime Date { get; private set; }
         public Amount Amount { get; private set; }
 
-        public Operation(Amount amount, DateTime date)
+        protected Operation(Amount amount, DateTime date)
         {
             Date = date;
             Amount = amount;

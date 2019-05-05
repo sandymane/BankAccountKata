@@ -9,7 +9,7 @@ namespace BankAccount
         private Amount _balance;
         private Operations _operations;
 
-        public Account()
+        private Account()
         {
             _balance = new Amount(0);
         }
