@@ -44,5 +44,16 @@ namespace BankAccount
 
             return stringBuilder.ToString();
         }
+
+        public List<string> GetFormattedOperationsList()
+        {
+            List<string> operations = new List<string>();
+
+            _operations.OrderByDescending(b => b.Date)
+               .ToList()
+               .ForEach(b => operations.Add(b.ToString()));
+
+            return operations;
+        }
     }
 }

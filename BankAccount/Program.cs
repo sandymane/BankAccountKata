@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BankAccount
 {
@@ -77,8 +79,8 @@ namespace BankAccount
                     {
                         if (CheckIfAccountExistsAndAdvertClient(account))
                         {
-                            string records = account.GetOperationsHistory();
-                            Console.WriteLine(records);
+                            List<string> records = account.GetOperationsHistoryList();
+                            Console.WriteLine(string.Join(Environment.NewLine, records));
                             DisplayMenu();
                         }
 

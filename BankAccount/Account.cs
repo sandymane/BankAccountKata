@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace BankAccount
@@ -54,37 +55,39 @@ namespace BankAccount
             return _balance.Value;
         }
 
-        public string GetOperationsHistory()
+        public List<string> GetOperationsHistoryList()
         {
+            List<string> operations = new List<string>();
             StringBuilder stringBuilder = new StringBuilder();
             string dateFrom = string.Empty;
             string dateTo = string.Empty;
-      
-            stringBuilder.AppendLine( $"Record of the account's operations");
-            stringBuilder.AppendLine("TYPE       | DATE       | WITHDRAWAL | DEPOSIT");
 
-            stringBuilder.AppendLine(_operations.ToString());
+            operations.Add($"Record of the account's operations");
+            operations.Add("TYPE       | DATE       | WITHDRAWAL | DEPOSIT");
 
-            stringBuilder.AppendLine("----------------------------------------------");
+            _operations.GetFormattedOperationsList().ForEach( b => {
+                operations.Add(b);
+            });
+
+            operations.Add("----------------------------------------------");
 
             double withdrawValue = GetTotatlOf<Withdrawal>();
             string withdraw = withdrawValue == 0 ? "" : "-" + GetTotatlOf<Withdrawal>().ToString();
             withdraw = withdraw.CompleteWithSpaces(10);
-           
-            stringBuilder.AppendLine(string.Format("Total of operations     | {0} | {1}",
+
+            operations.Add(string.Format("Total of operations     | {0} | {1}",
                 withdraw,
                 GetTotatlOf<Deposit>() == 0 ? "" : GetTotatlOf<Deposit>().ToString()));
 
-            stringBuilder.AppendLine("----------------------------------------------");
+            operations.Add("----------------------------------------------");
 
-            stringBuilder.AppendLine(string.Format("Balance of account      | {0}        | {1}",
+            operations.Add(string.Format("Balance of account      | {0}        | {1}",
                 _balance.Value < 0 ? _balance.Value.ToString() : "   ",
                 _balance.Value >= 0 ? _balance.Value.ToString() : ""));
-           
-            return stringBuilder.ToString();
+
+            return operations;
         }
 
-      
         public int GetOperationsCount()
         {
             return _operations.GetCount();
